@@ -1,0 +1,17 @@
+name: binarycr
+version: 0.1.0
+
+authors:
+  - Luis Gomez <xtokio@gmail.com>
+
+dependencies:
+  tablo:
+    github: hutou/tablo
+
+targets:
+  binarycr:
+    main: src/binarycr.cr
+
+crystal: 1.2.1
+
+license: MIT
