@@ -11,7 +11,7 @@ crystal build src/binarycr.cr --release
 ## Usage
 
 ```bash
-./binarycr --token=xxxxxxxxx --application=xxxxx --trade_amount=10 --wanted_profit=100 --stop_loss=256
+./binarycr --token=xxx --application=xxx --trade_amount=10 --wanted_profit=100 --stop_loss=256
 ```
 
 ## Screenshots
