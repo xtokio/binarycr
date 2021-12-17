@@ -190,15 +190,34 @@ module Binarycr
           end
           puts table.horizontal_rule(Tablo::TLine::Bot) if table.style =~ /BL/i
 
-          puts "Total Balance: $#{balance}"
-          puts "Total Profit:  $#{track_profit.format(decimal_places: 2)}".colorize(:blue)
+          # Totals table
+          balance_display = "$#{balance}"
 
-          puts "Total Won:  #{total_won}".colorize(:green)
-          puts "Total Lost: #{total_lost}".colorize(:red)
-
+          results_totals = [] of Array(String)
+          results_totals.push([total_won.to_s,total_lost.to_s,balance_display,track_profit.to_s])
+          table_totals = Tablo::Table.new(results_totals,connectors: Tablo::CONNECTORS_SINGLE_ROUNDED) do |t|
+            t.add_column("Won",
+              styler: ->(s : Tablo::CellType) { "#{s.colorize(:green)}" }) {|n| n[0] }
+            t.add_column("Lost",
+              styler: ->(s : Tablo::CellType) { "#{s.colorize(:red)}" }) {|n| n[1] }
+            t.add_column("Balance",
+              styler: ->(s : Tablo::CellType) { "#{s.colorize(:green)}" }) {|n| n[2] }
+            t.add_column("Profit",
+              formatter: ->(x : Tablo::CellType) { "%.2f" % x },
+              styler: ->(s : Tablo::CellType) { s.to_s.to_f > 0 ? "#{s.colorize(:green)}" : "#{s.colorize(:red)}" }) {|n| n[3] }
+          end
+          table_totals.each_with_index do |row, i|
+            puts table_totals.horizontal_rule(Tablo::TLine::Mid) if i > 0 && table_totals.style =~ /ML/i
+            puts row
+          end
+          puts table_totals.horizontal_rule(Tablo::TLine::Bot) if table_totals.style =~ /BL/i
+          puts "\n"
+          
           if (track_profit + stop_loss) > 0
             if track_profit > wanted_profit
-              puts "Wanted profit reached at $#{track_profit.format(decimal_places: 2)}".colorize(:green)
+              puts "Wanted profit reached.".colorize(:green)
+              puts "\n"
+
               exit
             else              
               # Contract
@@ -221,6 +240,8 @@ module Binarycr
             end
           else
             puts "Stop loss reached at $#{track_profit.format(decimal_places: 2)}".colorize(:red)
+            puts "\n"
+
             exit
           end
 
