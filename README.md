@@ -1,22 +1,36 @@
-# binarycr
+# Binarycr
 
-TODO: Write a description here
+Trading bot for Binary.com
 
 ## Installation
 
-TODO: Write installation instructions here
+```crystal
+crystal build src/binarycr.cr --release
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+```bash
+./binarycr --token=xxxxxxxxx --application=xxxxx --trade_amount=10 --wanted_profit=100 --stop_loss=256
+```
 
-## Development
+## Screenshots
 
-TODO: Write development instructions here
+Example #1 of a winning trading session
+
+![binary 01](screenshots/screen_shot_01.png)
+
+Example #2 of a losing trading session
+
+![binary 02](screenshots/screen_shot_02.png)
+
+Example #3 of a winning trading session
+
+![binary 03](screenshots/screen_shot_03.png)
 
 ## Contributing
 
-1. Fork it (<https://github.com/your-github-user/binarycr/fork>)
+1. Fork it (<https://github.com/xtokio/binarycr/fork>)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
@@ -24,4 +38,4 @@ TODO: Write development instructions here
 
 ## Contributors
 
-- [Luis Gomez](https://github.com/your-github-user) - creator and maintainer
+- [Luis Gomez](https://github.com/xtokio) - creator and maintainer
