@@ -1,5 +1,3 @@
-# binarycr.cr --token=WFPdisB9aImNwPO --application=30681 --trade_amount=10 --wanted_profit=100 --stop_loss=256
-
 require "option_parser"
 require "http/web_socket"
 require "json"
