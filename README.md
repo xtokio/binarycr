@@ -16,17 +16,9 @@ crystal build src/binarycr.cr --release
 
 ## Screenshots
 
-Example #1 of a winning trading session
+Example of a winning trading session
 
-![binary 01](screenshots/screen_shot_01.png)
-
-Example #2 of a losing trading session
-
-![binary 02](screenshots/screen_shot_02.png)
-
-Example #3 of a winning trading session
-
-![binary 03](screenshots/screen_shot_03.png)
+![binary 01](screenshots/screen_shot_00.png)
 
 ## Contributing
 
