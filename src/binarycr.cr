@@ -18,15 +18,16 @@ wanted_profit = 10
 stop_loss     = 256
 
 # Trade information
-contract_id      = 0
-tick             = 0
-total_won        = 0
-total_lost       = 0
-balance          = ""
-entry_tick_value = ""
-entry_tick_time  = ""
-exit_tick_value  = ""
-exit_tick_time   = ""
+contract_id       = 0
+tick              = 0
+total_won         = 0
+total_lost        = 0
+consecutive_loses = 0
+balance           = ""
+entry_tick_value  = ""
+entry_tick_time   = ""
+exit_tick_value   = ""
+exit_tick_time    = ""
 
 # Contract
 contract = {
@@ -150,6 +151,7 @@ module Binarycr
           
           if data["proposal_open_contract"]["status"] == "lost"
             total_lost = total_lost + 1
+            consecutive_loses = consecutive_loses + 1
 
             # Switch Contract Type
             if contract_type == "DIGITEVEN"
@@ -163,7 +165,7 @@ module Binarycr
   
           if data["proposal_open_contract"]["status"] == "won"
             total_won = total_won + 1
-
+            consecutive_loses = 0
             martingale = trade_amount
           end
 
@@ -176,7 +178,7 @@ module Binarycr
             t.add_column("Entry Time", width: 30) { |n| n[4] }
             t.add_column("Exit Time", width: 30) { |n| n[5] }
             t.add_column("Amount",
-              styler: ->(s : Tablo::CellType) { s.to_s.to_f >= 40 ? "#{s.colorize(:red)}" : "#{s.colorize(:white)}" }) { |n| n[6] }
+              styler: ->(s : Tablo::CellType) { s.to_s.to_f >= (trade_amount*2*2) ? "#{s.colorize(:red)}" : "#{s.colorize(:white)}" }) { |n| n[6] }
             t.add_column("Profit",
               formatter: ->(x : Tablo::CellType) { "%.2f" % x },
               styler: ->(s : Tablo::CellType) { s.to_s.to_f > 0 ? "#{s.colorize(:green)}" : "#{s.colorize(:red)}" }) { |n| n[7] }
