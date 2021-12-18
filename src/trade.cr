@@ -14,13 +14,13 @@ class Trade
     martingale    = trade_amount
     duration      = 1
     contract_type = "DIGITEVEN"
-    track_profit  = 0
 
     # Trade information
     tick              = 0
     total_won         = 0
     total_lost        = 0
     consecutive_loses = 0
+    track_profit  = 0
     balance           = ""
     contract_id       = ""
     entry_tick_value  = ""
