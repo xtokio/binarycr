@@ -12,6 +12,7 @@ require "./store.cr"
 token  = ""
 app_id = ""
 show_balance = false
+alternate    = false
 
 # Configuration
 trade_amount  = 1
@@ -58,6 +59,10 @@ module Binarycr
     parser.on "--stop_loss=STOP_LOSS", "Set Stop Loss to stop trading" do |input_stop_loss|
       stop_loss = input_stop_loss.to_i
     end
+
+    parser.on "--alternate", "Show current balance from binary.com" do
+      alternate = true
+    end
   end
 
   # Start Trading only if we have a Token and an App ID
@@ -67,7 +72,7 @@ module Binarycr
     if show_balance
       Balance.new(token,app_id)    
     else
-      Trade.new(token,app_id,trade_amount,wanted_profit,stop_loss)
+      Trade.new(token,app_id,trade_amount,wanted_profit,stop_loss,alternate)
     end
   
   else

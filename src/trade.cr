@@ -1,7 +1,7 @@
 class Trade
   property token : String, app_id : String
 
-  def initialize(token,app_id,trade_amount,wanted_profit,stop_loss)
+  def initialize(token,app_id,trade_amount,wanted_profit,stop_loss,alternate)
     @token = token
     @app_id = app_id
     
@@ -100,12 +100,14 @@ class Trade
             total_lost = total_lost + 1
             consecutive_loses = consecutive_loses + 1
 
-            # Switch Contract Type
-            if contract_type == "DIGITEVEN"
-              contract_type = "DIGITODD"
-            else
-              contract_type = "DIGITEVEN"
-            end
+            # Switch Contract Type if alternate is true
+            contract_type = invert_contract_type(contract_type) if alternate
+
+            # Force contract type to DIGITEVEN after first lost
+            # if consecutive_loses == 2
+            #   contract_type = invert_contract_type(contract_type) if alternate
+            # end
+
             # Apply Martingale
             martingale = (martingale.to_f * 2).to_s
           end
@@ -250,5 +252,14 @@ class Trade
     # Start infinite loop
     ws.run
 
+  end
+
+  def invert_contract_type(contract_type)
+    if contract_type == "DIGITEVEN"
+      contract_type = "DIGITODD"
+    else
+      contract_type = "DIGITEVEN"
+    end
+    return contract_type
   end
 end
