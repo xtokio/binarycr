@@ -6,6 +6,7 @@ require "tablo"
 
 require "./balance.cr"
 require "./trade.cr"
+require "./store.cr"
 
 # Credentials
 token  = ""

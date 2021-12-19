@@ -4,4 +4,5 @@
 /.shards/
 *.dwarf
 .editorconfig
+trade_history.txt
 binarycr

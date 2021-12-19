@@ -168,6 +168,27 @@ class Trade
               puts "Wanted profit reached.".colorize(:green)
               puts "\n"
 
+              # Save results to a file
+              table_file = Tablo::Table.new(results, connectors: Tablo::CONNECTORS_SINGLE_ROUNDED) do |t|
+                t.add_column("Contract ID") { |n| n[0] }
+                t.add_column("Contract Type", width: 16) { |n| n[1] }
+                t.add_column("Entry Price") { |n| n[2] }
+                t.add_column("Exit Price") { |n| n[3] }
+                t.add_column("Entry Time", width: 30) { |n| n[4] }
+                t.add_column("Exit Time", width: 30) { |n| n[5] }
+                t.add_column("Amount") { |n| n[6] }
+                t.add_column("Profit") { |n| n[7] }
+              end
+              Store.file("trade_history.txt",table_file)
+
+              table_totals_file = Tablo::Table.new(results_totals,connectors: Tablo::CONNECTORS_SINGLE_ROUNDED) do |t|
+                t.add_column("Balance") {|n| n[0] }
+                t.add_column("Won") {|n| n[1] }
+                t.add_column("Lost") {|n| n[2] }
+                t.add_column("Profit") {|n| n[3] }
+              end
+              Store.file("trade_history.txt",table_totals_file)
+
               exit
             else              
               # Contract
