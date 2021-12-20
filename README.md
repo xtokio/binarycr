@@ -10,8 +10,14 @@ crystal build src/binarycr.cr --release
 
 ## Usage
 
+By default it will alternate between Contract Types, EVEN and ODD
 ```bash
-./binarycr --token=xxx --application=xxx --trade_amount=10 --wanted_profit=100 --stop_loss=256 --alternate
+./binarycr --token=xxx --application=xxx --trade_amount=10 --wanted_profit=100 --stop_loss=256
+```
+
+To only place trades in EVEN or ODD you can add an extra parameter to force it to only stay in one type of contract
+```bash
+./binarycr --token=xxx --application=xxx --trade_amount=10 --wanted_profit=100 --stop_loss=256 --contract=even
 ```
 
 ## Screenshots

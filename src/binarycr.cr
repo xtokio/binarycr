@@ -12,9 +12,10 @@ require "./store.cr"
 token  = ""
 app_id = ""
 show_balance = false
-alternate    = false
+alternate    = true
 
 # Configuration
+contract_type = "DIGITEVEN"
 trade_amount  = 1
 wanted_profit = 10
 stop_loss     = 256
@@ -60,8 +61,13 @@ module Binarycr
       stop_loss = input_stop_loss.to_i
     end
 
-    parser.on "--alternate", "Show current balance from binary.com" do
-      alternate = true
+    parser.on "--contract=CONTRACT", "Set contract type to even or odd" do |input_contract_type|
+      if input_contract_type.upcase == "EVEN"
+        contract_type = "DIGITEVEN"
+      else
+        contract_type = "DIGITODD"
+      end
+      alternate = false
     end
   end
 
@@ -72,7 +78,7 @@ module Binarycr
     if show_balance
       Balance.new(token,app_id)    
     else
-      Trade.new(token,app_id,trade_amount,wanted_profit,stop_loss,alternate)
+      Trade.new(token,app_id,trade_amount,wanted_profit,stop_loss,contract_type,alternate)
     end
   
   else
