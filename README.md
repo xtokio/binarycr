@@ -20,7 +20,7 @@ To only place trades in EVEN or ODD you can add an extra parameter to force it t
 ./binarycr --token=xxx --application=xxx --trade_amount=10 --wanted_profit=100 --stop_loss=256 --contract=even
 ```
 
-To display only the balance of the account
+To display the account balance
 ```bash
 ./binarycr --token=xxx --application=xxx --balance
 ```
