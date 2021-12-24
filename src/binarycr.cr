@@ -5,6 +5,7 @@ require "colorize"
 require "tablo"
 
 require "./balance.cr"
+require "./tick.cr"
 require "./trade.cr"
 require "./store.cr"
 
@@ -12,6 +13,8 @@ require "./store.cr"
 token  = ""
 app_id = ""
 show_balance = false
+show_ticks   = false
+num_ticks    = 0
 alternate    = true
 
 # Configuration
@@ -48,6 +51,11 @@ module Binarycr
       show_balance = true
     end
 
+    parser.on "--ticks=TICKS", "Show first 100 ticks from binary.com" do |input_ticks|
+      show_ticks = true
+      num_ticks = input_ticks.to_i
+    end
+
     parser.on "--trade_amount=AMOUNT", "Set Amount to start trading" do |input_amount|
       trade_amount = input_amount.to_f.format(decimal_places: 2)
       martingale = input_amount.to_f.format(decimal_places: 2)
@@ -77,6 +85,8 @@ module Binarycr
     # Show balance option
     if show_balance
       Balance.new(token,app_id)    
+    elsif show_ticks
+      Tick.new(token,app_id,num_ticks)
     else
       Trade.new(token,app_id,trade_amount,wanted_profit,stop_loss,contract_type,alternate)
     end

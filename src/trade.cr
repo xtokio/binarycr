@@ -93,7 +93,7 @@ class Trade
           martingale = buy_price
 
           # Accumulate results
-          results.push([contract_id,contract_type,entry_tick_value,exit_tick_value,entry_tick_time,exit_tick_time,buy_price,profit])
+          results.push([contract_id,contract_type,entry_tick_value,exit_tick_value,entry_tick_time,exit_tick_time,buy_price,profit.gsub(",","")])
           
           if data["proposal_open_contract"]["status"] == "lost"
             total_lost = total_lost + 1
@@ -102,10 +102,10 @@ class Trade
             # Switch Contract Type if alternate is true
             contract_type = invert_contract_type(contract_type) if alternate
 
-            # Force contract type to DIGITEVEN after first lost
-            # if consecutive_loses == 2
-            #   contract_type = invert_contract_type(contract_type) if alternate
-            # end
+            # Force contract type to Invert
+            if consecutive_loses == 2 || consecutive_loses == 4
+              # contract_type = invert_contract_type(contract_type) if alternate
+            end
 
             # Apply Martingale
             martingale = (martingale.to_f * 2).to_s
@@ -131,7 +131,6 @@ class Trade
             t.add_column("Amount",
               styler: ->(s : Tablo::CellType) { s.to_s.to_f >= (trade_amount.to_f*2*2) ? "#{s.colorize(:red)}" : "#{s.colorize(:white)}" }) { |n| n[6] }
             t.add_column("Profit",
-              formatter: ->(x : Tablo::CellType) { "%.2f" % x },
               styler: ->(s : Tablo::CellType) { s.to_s.to_f > 0 ? "#{s.colorize(:green)}" : "#{s.colorize(:red)}" }) { |n| n[7] }
           end
           # puts table
@@ -145,7 +144,7 @@ class Trade
           balance_display = "$#{balance}"
 
           results_totals = [] of Array(String)
-          results_totals.push([balance_display,total_won.to_s,total_lost.to_s,track_profit.to_s])
+          results_totals.push([balance_display,total_won.to_s,total_lost.to_s,track_profit.to_s.to_f.format(decimal_places: 2).gsub(",","")])
           table_totals = Tablo::Table.new(results_totals,connectors: Tablo::CONNECTORS_SINGLE_ROUNDED) do |t|
             t.add_column("Balance",
               styler: ->(s : Tablo::CellType) { "#{s.colorize(:green)}" }) {|n| n[0] }
@@ -154,7 +153,6 @@ class Trade
             t.add_column("Lost",
               styler: ->(s : Tablo::CellType) { "#{s.colorize(:red)}" }) {|n| n[2] }
             t.add_column("Profit",
-              formatter: ->(x : Tablo::CellType) { "%.2f" % x },
               styler: ->(s : Tablo::CellType) { s.to_s.to_f > 0 ? "#{s.colorize(:green)}" : "#{s.colorize(:red)}" }) {|n| n[3] }
           end
           table_totals.each_with_index do |row, i|
@@ -178,8 +176,7 @@ class Trade
                 t.add_column("Entry Time", width: 30) { |n| n[4] }
                 t.add_column("Exit Time", width: 30) { |n| n[5] }
                 t.add_column("Amount") { |n| n[6] }
-                t.add_column("Profit",
-                formatter: ->(x : Tablo::CellType) { "%.2f" % x }) { |n| n[7] }
+                t.add_column("Profit") { |n| n[7] }
               end
               Store.file("trade_history.txt",table_file)
 
@@ -187,8 +184,7 @@ class Trade
                 t.add_column("Balance") {|n| n[0] }
                 t.add_column("Won") {|n| n[1] }
                 t.add_column("Lost") {|n| n[2] }
-                t.add_column("Profit",
-                formatter: ->(x : Tablo::CellType) { "%.2f" % x }) {|n| n[3] }
+                t.add_column("Profit") {|n| n[3] }
               end
               Store.file("trade_history.txt",table_totals_file)
 
@@ -198,9 +194,9 @@ class Trade
               contract = {
                 "buy"=> 1,
                 "subscribe"=> 1,
-                "price"=> martingale,
+                "price"=> martingale.to_s,
                 "parameters"=> { 
-                  "amount"=> martingale, 
+                  "amount"=> martingale.to_s, 
                   "basis"=> "stake", 
                   "contract_type"=> contract_type, 
                   "currency"=> "USD", 
@@ -225,8 +221,7 @@ class Trade
               t.add_column("Entry Time", width: 30) { |n| n[4] }
               t.add_column("Exit Time", width: 30) { |n| n[5] }
               t.add_column("Amount") { |n| n[6] }
-              t.add_column("Profit",
-              formatter: ->(x : Tablo::CellType) { "%.2f" % x }) { |n| n[7] }
+              t.add_column("Profit") { |n| n[7] }
             end
             Store.file("trade_history.txt",table_file)
 
@@ -234,8 +229,7 @@ class Trade
               t.add_column("Balance") {|n| n[0] }
               t.add_column("Won") {|n| n[1] }
               t.add_column("Lost") {|n| n[2] }
-              t.add_column("Profit",
-              formatter: ->(x : Tablo::CellType) { "%.2f" % x }) {|n| n[3] }
+              t.add_column("Profit") {|n| n[3] }
             end
             Store.file("trade_history.txt",table_totals_file)
 
