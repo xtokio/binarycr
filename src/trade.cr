@@ -103,8 +103,8 @@ class Trade
             contract_type = invert_contract_type(contract_type) if alternate
 
             # Force contract type to Invert
-            if consecutive_loses == 2 || consecutive_loses == 4
-              # contract_type = invert_contract_type(contract_type) if alternate
+            if consecutive_loses == 2 || consecutive_loses == 3
+              contract_type = invert_contract_type(contract_type)
             end
 
             # Apply Martingale
@@ -115,6 +115,10 @@ class Trade
             total_won = total_won + 1
             consecutive_loses = 0
             martingale = trade_amount
+
+            if !alternate
+              contract_type = "DIGITEVEN"
+            end
           end
 
           # Clear console
@@ -162,8 +166,10 @@ class Trade
           puts table_totals.horizontal_rule(Tablo::TLine::Bot) if table_totals.style =~ /BL/i
           puts "\n"
           
-          if (track_profit + stop_loss) > 0
+          if consecutive_loses < stop_loss
             if track_profit > wanted_profit
+              display_notification("BinaryCR","Notification","Wanted profit reached at $#{track_profit.format(decimal_places: 2)}.","won")
+
               puts "Wanted profit reached.".colorize(:green)
               puts "\n"
 
@@ -209,6 +215,7 @@ class Trade
               ws.send(contract.to_json)
             end
           else
+            display_notification("BinaryCR","Notification","Stop loss reached at $#{track_profit.format(decimal_places: 2)}","won")
             puts "Stop loss reached at $#{track_profit.format(decimal_places: 2)}".colorize(:red)
             puts "\n"
 
@@ -255,4 +262,9 @@ class Trade
     end
     return contract_type
   end
+
+  def display_notification(notification="BinaryCR",title="Notification",subtitle="Crystal system notification",sound="won")
+    system "osascript -e 'display notification \"#{notification}\" with title \"#{title}\" subtitle \"#{subtitle}\" sound name \"#{sound}\"'"
+  end
+
 end
