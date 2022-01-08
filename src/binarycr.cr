@@ -65,7 +65,7 @@ module Binarycr
       wanted_profit = input_wanted_profit.to_i
     end
 
-    parser.on "--stop_loss=STOP_LOSS", "Set Stop Loss to stop trading" do |input_stop_loss|
+    parser.on "--stop_loss=STOP_LOSS", "Set Stop Loss to stop trading, number of consecutive losses" do |input_stop_loss|
       stop_loss = input_stop_loss.to_i
     end
 
