@@ -1,9 +1,10 @@
 class Trade
-  property token : String, app_id : String
+  property token : String, app_id : String, status : String
 
   def initialize(token,app_id,trade_amount,wanted_profit,stop_loss,contract_type,alternate)
     @token = token
     @app_id = app_id
+    @status = ""
     
     # Clear console
     print "\33c\e[3J"
@@ -100,11 +101,13 @@ class Trade
             consecutive_loses = consecutive_loses + 1
 
             # Switch Contract Type if alternate is true
-            contract_type = invert_contract_type(contract_type) if alternate
-
-            # Force contract type to Invert
-            if consecutive_loses == 2 || consecutive_loses == 3
+            if alternate
               contract_type = invert_contract_type(contract_type)
+            else
+              # Force contract type to Invert
+              if consecutive_loses == 2 || consecutive_loses == 3 || consecutive_loses == 4 || consecutive_loses == 5
+                # contract_type = invert_contract_type(contract_type)
+              end
             end
 
             # Apply Martingale
@@ -194,7 +197,9 @@ class Trade
               end
               Store.file("trade_history.txt",table_totals_file)
 
-              exit
+              # exit
+              @status = "won"
+              ws.close
             else              
               # Contract
               contract = {
@@ -240,6 +245,8 @@ class Trade
             end
             Store.file("trade_history.txt",table_totals_file)
 
+            @status = "lost"
+            ws.close
             exit
           end
 
