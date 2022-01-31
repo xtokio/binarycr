@@ -79,7 +79,26 @@ class Trade
       when "balance"
         balance = data["balance"]["balance"]
       when "buy"
-        contract_id = data["buy"]["contract_id"].to_s
+        if data["buy"]? != nil
+          contract_id = data["buy"]["contract_id"].to_s
+        else
+          # Websocket was closed
+          Store.file("trade_history.txt","Websocket closed.")
+
+          balance_display = "$#{balance}"
+          websocket_closed_totals = [] of Array(String)
+          websocket_closed_totals.push([balance_display,track_profit.to_s.to_f.format(decimal_places: 2).gsub(",","")])
+          websocket_closed_file = Tablo::Table.new(websocket_closed_totals,connectors: Tablo::CONNECTORS_SINGLE_ROUNDED) do |t|
+            t.add_column("Balance") {|n| n[0] }
+            t.add_column("Profit") {|n| n[1] }
+          end
+          Store.file("trade_history.txt",websocket_closed_file)
+
+          @status = "websocket_closed"
+          puts "Websocket closed.".colorize(:red)
+          ws.close
+          exit
+        end
       when "proposal_open_contract"
         if data["proposal_open_contract"]["is_sold"].to_s.to_i == 1
 
@@ -102,12 +121,12 @@ class Trade
 
             # Switch Contract Type if alternate is true
             if alternate
+              contract_type = invert_contract_type(contract_type)             
+            end
+
+             # Force contract type to Invert
+             if consecutive_loses == 3 || consecutive_loses == 5
               contract_type = invert_contract_type(contract_type)
-            else
-              # Force contract type to Invert
-              if consecutive_loses == 2 || consecutive_loses == 3 || consecutive_loses == 4 || consecutive_loses == 5
-                # contract_type = invert_contract_type(contract_type)
-              end
             end
 
             # Apply Martingale
