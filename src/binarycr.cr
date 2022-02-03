@@ -20,6 +20,7 @@ alternate    = true
 # Configuration
 contract_type = "DIGITEVEN"
 trade_amount  = 1
+duration      = 1
 wanted_profit = 10
 stop_loss     = 256
 
@@ -61,6 +62,10 @@ module Binarycr
       martingale = input_amount.to_f.format(decimal_places: 2)
     end
 
+    parser.on "--duration=TICK_DURATION", "Set Tick Duration" do |input_tick_duration|
+      duration = input_tick_duration.to_i
+    end
+
     parser.on "--wanted_profit=WANTED_PROFIT", "Set Wanted Profit" do |input_wanted_profit|
       wanted_profit = input_wanted_profit.to_i
     end
@@ -88,12 +93,12 @@ module Binarycr
     elsif show_ticks
       Tick.new(token,app_id,num_ticks)
     else
-      trade = Trade.new(token,app_id,trade_amount,wanted_profit,stop_loss,contract_type,alternate)
+      trade = Trade.new(token,app_id,trade_amount,duration,wanted_profit,stop_loss,contract_type,alternate)
       status = trade.status
       sleep 5
       
       while status == "won"
-        trade = Trade.new(token,app_id,trade_amount,wanted_profit,stop_loss,contract_type,alternate)
+        trade = Trade.new(token,app_id,trade_amount,duration,wanted_profit,stop_loss,contract_type,alternate)
         status = trade.status
         sleep 5
       end

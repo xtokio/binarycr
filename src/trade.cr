@@ -1,7 +1,7 @@
 class Trade
   property token : String, app_id : String, status : String
 
-  def initialize(token,app_id,trade_amount,wanted_profit,stop_loss,contract_type,alternate)
+  def initialize(token,app_id,trade_amount,duration,wanted_profit,stop_loss,contract_type,alternate)
     @token = token
     @app_id = app_id
     @status = ""
@@ -13,7 +13,6 @@ class Trade
 
     # Configuration
     martingale    = trade_amount
-    duration      = 1
 
     # Trade information
     tick              = 0
