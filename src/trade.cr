@@ -123,8 +123,8 @@ class Trade
               contract_type = invert_contract_type(contract_type)             
             end
 
-             # Force contract type to Invert
-             if consecutive_loses == 3 || consecutive_loses == 5
+            # Force contract type to Invert
+            if consecutive_loses == 3 || consecutive_loses == 5
               contract_type = invert_contract_type(contract_type)
             end
 

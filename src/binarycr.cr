@@ -75,12 +75,17 @@ module Binarycr
     end
 
     parser.on "--contract=CONTRACT", "Set contract type to even or odd" do |input_contract_type|
+      if input_contract_type.upcase == "BOTH"
+        contract_type = "DIGITEVEN"
+      end
       if input_contract_type.upcase == "EVEN"
         contract_type = "DIGITEVEN"
-      else
-        contract_type = "DIGITODD"
+        alternate = false
       end
-      alternate = false
+      if input_contract_type.upcase == "ODD"
+        contract_type = "DIGITODD"
+        alternate = false
+      end
     end
   end
 
