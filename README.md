@@ -8,16 +8,27 @@ Trading bot for Binary.com
 crystal build src/binarycr.cr --release
 ```
 
+## Parameters
+`--token=xxx` Is your Token from `binary.com` <br>
+`--application=xxx` Is your APP number from `binary.com` <br>
+`--duration=1` That is the number of ticks to wait between trades <br>
+`--trade_amount=1`   Amount of dollars on each trade <br>
+`--wanted_profit=10`  Profit to take and close the trading session <br>
+`--stop_loss=8`     Stop loss, trading session will end at the specified consecutive loss <br>
+`--contract=even` Type of contract to trade `even`, `odd` and `both` ( both will alternate between even and odd) <br>
+
+To exit a trading session you must hit CTRL + C to end the program. <br>
+
 ## Usage
 
-By default it will alternate between Contract Types, EVEN and ODD
+It will alternate between Contract Types, EVEN and ODD
 ```bash
-./binarycr --token=xxx --application=xxx --trade_amount=10 --wanted_profit=100 --stop_loss=256
+./binarycr --token=xxx --application=xxx --duration=1 --trade_amount=10 --wanted_profit=100 --stop_loss=8 --contract=both
 ```
 
-To only place trades in EVEN or ODD you can add an extra parameter to force it to only stay in one type of contract
+To only place trades in EVEN or ODD you can set it in the --contract parameter for `even` or `odd`
 ```bash
-./binarycr --token=xxx --application=xxx --trade_amount=10 --wanted_profit=100 --stop_loss=256 --contract=even
+./binarycr --token=xxx --application=xxx --duration=1 --trade_amount=10 --wanted_profit=100 --stop_loss=8 --contract=even
 ```
 
 To display the account balance
