@@ -16,6 +16,7 @@ crystal build src/binarycr.cr --release
 `--wanted_profit=10`  Profit to take and close the trading session <br>
 `--stop_loss=8`     Stop loss, trading session will end at the specified consecutive loss <br>
 `--contract=even` Type of contract to trade `even`, `odd` and `both` ( both will alternate between even and odd) <br>
+`--show_notification=true` It will show a notification alert when the trading session ends but ONLY for a MacOS computer
 
 To exit a trading session you must hit CTRL + C to end the program. <br>
 

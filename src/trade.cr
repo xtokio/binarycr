@@ -1,7 +1,7 @@
 class Trade
   property token : String, app_id : String, status : String
 
-  def initialize(token,app_id,trade_amount,duration,wanted_profit,stop_loss,contract_type,alternate)
+  def initialize(token,app_id,trade_amount,duration,wanted_profit,stop_loss,contract_type,alternate,show_notification)
     @token = token
     @app_id = app_id
     @status = ""
@@ -189,7 +189,9 @@ class Trade
           
           if consecutive_loses < stop_loss
             if track_profit > wanted_profit
-              display_notification("BinaryCR","Notification","Wanted profit reached at $#{track_profit.format(decimal_places: 2)}.","won")
+              if show_notification
+                display_notification("BinaryCR","Notification","Wanted profit reached at $#{track_profit.format(decimal_places: 2)}.","won")
+              end
 
               puts "Wanted profit reached.".colorize(:green)
               puts "\n"
@@ -238,7 +240,10 @@ class Trade
               ws.send(contract.to_json)
             end
           else
-            display_notification("BinaryCR","Notification","Stop loss reached at $#{track_profit.format(decimal_places: 2)}","won")
+            if show_notification
+              display_notification("BinaryCR","Notification","Stop loss reached at $#{track_profit.format(decimal_places: 2)}","won")
+            end
+            
             puts "Stop loss reached at $#{track_profit.format(decimal_places: 2)}".colorize(:red)
             puts "\n"
 

@@ -12,10 +12,11 @@ require "./store.cr"
 # Credentials
 token  = ""
 app_id = ""
-show_balance = false
-show_ticks   = false
-num_ticks    = 0
-alternate    = true
+show_balance      = false
+show_ticks        = false
+show_notification = false
+num_ticks         = 0
+alternate         = true
 
 # Configuration
 contract_type = "DIGITEVEN"
@@ -87,6 +88,12 @@ module Binarycr
         alternate = false
       end
     end
+
+    parser.on "--show_notification=SHOW_NOTIFICATION", "Show a notification alert at the end of the trading session (Only MacOS)" do |input_show_notification|
+      if input_show_notification.upcase == "TRUE"
+        show_notification = true
+      end
+    end
   end
 
   # Start Trading only if we have a Token and an App ID
@@ -98,12 +105,12 @@ module Binarycr
     elsif show_ticks
       Tick.new(token,app_id,num_ticks)
     else
-      trade = Trade.new(token,app_id,trade_amount,duration,wanted_profit,stop_loss,contract_type,alternate)
+      trade = Trade.new(token,app_id,trade_amount,duration,wanted_profit,stop_loss,contract_type,alternate,show_notification)
       status = trade.status
       sleep 5
       
       while status == "won"
-        trade = Trade.new(token,app_id,trade_amount,duration,wanted_profit,stop_loss,contract_type,alternate)
+        trade = Trade.new(token,app_id,trade_amount,duration,wanted_profit,stop_loss,contract_type,alternate,show_notification)
         status = trade.status
         sleep 5
       end
