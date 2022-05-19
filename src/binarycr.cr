@@ -107,13 +107,14 @@ module Binarycr
     else
       trade = Trade.new(token,app_id,trade_amount,duration,wanted_profit,stop_loss,contract_type,alternate,show_notification)
       status = trade.status
-      sleep 5
+      # sleep 5
       
-      while status == "won"
-        trade = Trade.new(token,app_id,trade_amount,duration,wanted_profit,stop_loss,contract_type,alternate,show_notification)
-        status = trade.status
-        sleep 5
-      end
+      # Loop while winning
+      # while status == "won"
+      #   trade = Trade.new(token,app_id,trade_amount,duration,wanted_profit,stop_loss,contract_type,alternate,show_notification)
+      #   status = trade.status
+      #   sleep 5
+      # end
 
     end
   
