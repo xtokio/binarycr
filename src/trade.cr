@@ -124,9 +124,9 @@ class Trade
             end
 
             # Force contract type to Invert
-            if consecutive_loses == 3 || consecutive_loses == 5
-              contract_type = invert_contract_type(contract_type)
-            end
+            # if consecutive_loses == 3 || consecutive_loses == 5
+            #   contract_type = invert_contract_type(contract_type)
+            # end
 
             # Apply Martingale
             martingale = (martingale.to_f * 2).to_s
