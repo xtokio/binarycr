@@ -217,9 +217,9 @@ class Trade
               end
               Store.file("trade_history.txt",table_totals_file)
 
-              # exit
               @status = "won"
               ws.close
+              exit
             else              
               # Contract
               contract = {
