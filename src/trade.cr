@@ -124,9 +124,9 @@ class Trade
             end
 
             # Force contract type to Invert
-            # if consecutive_loses == 3 || consecutive_loses == 5
-            #   contract_type = invert_contract_type(contract_type)
-            # end
+            if consecutive_loses == 3 || consecutive_loses == 5
+              contract_type = invert_contract_type(contract_type)
+            end
 
             # Apply Martingale
             martingale = (martingale.to_f * 2).to_s
@@ -190,10 +190,10 @@ class Trade
           if consecutive_loses < stop_loss
             if track_profit > wanted_profit
               if show_notification
-                display_notification("BinaryCR","Notification","Wanted profit reached at $#{track_profit.format(decimal_places: 2)}.","won")
+                display_notification("BinaryCR","Notification","Wanted profit reached at $ #{track_profit.format(decimal_places: 2)}","won")
               end
 
-              puts "Wanted profit reached.".colorize(:green)
+              puts "Wanted profit reached at $#{track_profit.format(decimal_places: 2)}".colorize(:green)
               puts "\n"
 
               # Save results to a file
@@ -241,7 +241,7 @@ class Trade
             end
           else
             if show_notification
-              display_notification("BinaryCR","Notification","Stop loss reached at $#{track_profit.format(decimal_places: 2)}","won")
+              display_notification("BinaryCR","Notification","Stop loss reached at $ #{track_profit.format(decimal_places: 2)}","lost")
             end
             
             puts "Stop loss reached at $#{track_profit.format(decimal_places: 2)}".colorize(:red)
@@ -294,7 +294,11 @@ class Trade
   end
 
   def display_notification(notification="BinaryCR",title="Notification",subtitle="Crystal system notification",sound="won")
-    system "osascript -e 'display notification \"#{notification}\" with title \"#{title}\" subtitle \"#{subtitle}\" sound name \"#{sound}\"'"
+    # MacOS
+    # system "osascript -e 'display notification \"#{notification}\" with title \"#{title}\" subtitle \"#{subtitle}\" sound name \"#{sound}\"'"
+
+    # Windows WSL -- https://github.com/stuartleeks/wsl-notify-send
+    system "wsl-notify-send.exe --appId \"#{notification} \" --category \"#{title}\" \"#{subtitle}\""
   end
 
 end
