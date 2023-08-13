@@ -1,6 +1,6 @@
 # Binarycr
 
-Trading bot for Binary.com
+Trading bot for Deriv.com
 
 ## Installation
 
