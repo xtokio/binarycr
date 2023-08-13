@@ -1,7 +1,7 @@
 class Trade
   property token : String, app_id : String, status : String
 
-  def initialize(token,app_id,trade_amount,duration,wanted_profit,stop_loss,contract_type,alternate,show_notification)
+  def initialize(token,app_id,trade_amount,duration,wanted_profit,stop_loss,contract_type,alternate,current_session,show_notification)
     @token = token
     @app_id = app_id
     @status = ""
@@ -124,8 +124,8 @@ class Trade
             end
 
             # Force contract type to Invert
-            if consecutive_loses == 3 || consecutive_loses == 5
-              contract_type = invert_contract_type(contract_type)
+            if consecutive_loses > 2
+              contract_type = "DIGITEVEN"
             end
 
             # Apply Martingale
@@ -169,16 +169,13 @@ class Trade
           balance_display = "$#{balance}"
 
           results_totals = [] of Array(String)
-          results_totals.push([balance_display,total_won.to_s,total_lost.to_s,track_profit.to_s.to_f.format(decimal_places: 2).gsub(",","")])
+          results_totals.push([balance_display,current_session.to_s,total_won.to_s,total_lost.to_s,track_profit.to_s.to_f.format(decimal_places: 2).gsub(",","")])
           table_totals = Tablo::Table.new(results_totals,connectors: Tablo::CONNECTORS_SINGLE_ROUNDED) do |t|
-            t.add_column("Balance",
-              styler: ->(s : Tablo::CellType) { "#{s.colorize(:green)}" }) {|n| n[0] }
-            t.add_column("Won",
-              styler: ->(s : Tablo::CellType) { "#{s.colorize(:green)}" }) {|n| n[1] }
-            t.add_column("Lost",
-              styler: ->(s : Tablo::CellType) { "#{s.colorize(:red)}" }) {|n| n[2] }
-            t.add_column("Profit",
-              styler: ->(s : Tablo::CellType) { s.to_s.to_f > 0 ? "#{s.colorize(:green)}" : "#{s.colorize(:red)}" }) {|n| n[3] }
+            t.add_column("Balance", styler: ->(s : Tablo::CellType) { "#{s.colorize(:green)}" }) {|n| n[0] }
+            t.add_column("Current session", width: 16, styler: ->(s : Tablo::CellType) { "#{s.colorize(:green)}" }) {|n| n[1] }
+            t.add_column("Won", styler: ->(s : Tablo::CellType) { "#{s.colorize(:green)}" }) {|n| n[2] }
+            t.add_column("Lost", styler: ->(s : Tablo::CellType) { "#{s.colorize(:red)}" }) {|n| n[3] }
+            t.add_column("Profit", styler: ->(s : Tablo::CellType) { s.to_s.to_f > 0 ? "#{s.colorize(:green)}" : "#{s.colorize(:red)}" }) {|n| n[4] }
           end
           table_totals.each_with_index do |row, i|
             puts table_totals.horizontal_rule(Tablo::TLine::Mid) if i > 0 && table_totals.style =~ /ML/i
@@ -219,7 +216,7 @@ class Trade
 
               @status = "won"
               ws.close
-              exit
+              # exit
             else              
               # Contract
               contract = {
@@ -270,7 +267,7 @@ class Trade
 
             @status = "lost"
             ws.close
-            exit
+            # exit
           end
 
         end      

@@ -105,16 +105,23 @@ module Binarycr
     elsif show_ticks
       Tick.new(token,app_id,num_ticks)
     else
-      trade = Trade.new(token,app_id,trade_amount,duration,wanted_profit,stop_loss,contract_type,alternate,show_notification)
+      current_session = 1
+
+      trade = Trade.new(token,app_id,trade_amount,duration,wanted_profit,stop_loss,contract_type,alternate,current_session,show_notification)
       status = trade.status
-      # sleep 5
       
       # Loop while winning
-      # while status == "won"
-      #   trade = Trade.new(token,app_id,trade_amount,duration,wanted_profit,stop_loss,contract_type,alternate,show_notification)
-      #   status = trade.status
-      #   sleep 5
-      # end
+      while status == "won" && current_session < 10
+        current_session = current_session + 1
+
+        sleep 10
+
+        trade = Trade.new(token,app_id,trade_amount,duration,wanted_profit,stop_loss,contract_type,alternate,current_session,show_notification)
+        status = trade.status
+
+      end
+
+      exit
 
     end
   
