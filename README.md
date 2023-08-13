@@ -9,8 +9,8 @@ crystal build src/binarycr.cr --release
 ```
 
 ## Parameters
-`--token=xxx` Is your Token from `binary.com` <br>
-`--application=xxx` Is your APP number from `binary.com` <br>
+`--token=xxx` Is your Token from `deriv.com` <br>
+`--application=xxx` Is your APP number from `deriv.com` <br>
 `--duration=1` That is the number of ticks to wait between trades <br>
 `--trade_amount=1`   Amount of dollars on each trade <br>
 `--wanted_profit=10`  Profit to take and close the trading session <br>
