@@ -208,9 +208,10 @@ class Trade
 
               table_totals_file = Tablo::Table.new(results_totals,connectors: Tablo::CONNECTORS_SINGLE_ROUNDED) do |t|
                 t.add_column("Balance") {|n| n[0] }
-                t.add_column("Won") {|n| n[1] }
-                t.add_column("Lost") {|n| n[2] }
-                t.add_column("Profit") {|n| n[3] }
+                t.add_column("Current session", width: 16) {|n| n[1] }
+                t.add_column("Won") {|n| n[2] }
+                t.add_column("Lost") {|n| n[3] }
+                t.add_column("Profit") {|n| n[4] }
               end
               Store.file("trade_history.txt",table_totals_file)
 
@@ -259,9 +260,10 @@ class Trade
 
             table_totals_file = Tablo::Table.new(results_totals,connectors: Tablo::CONNECTORS_SINGLE_ROUNDED) do |t|
               t.add_column("Balance") {|n| n[0] }
-              t.add_column("Won") {|n| n[1] }
-              t.add_column("Lost") {|n| n[2] }
-              t.add_column("Profit") {|n| n[3] }
+              t.add_column("Current session", width: 16) {|n| n[1] }
+              t.add_column("Won") {|n| n[2] }
+              t.add_column("Lost") {|n| n[3] }
+              t.add_column("Profit") {|n| n[4] }
             end
             Store.file("trade_history.txt",table_totals_file)
 
